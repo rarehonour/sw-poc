@@ -16,13 +16,13 @@ export class RequestsWorker {
     constructor() {
 
 
-        //this.receive = this.receive.bind(this);
-        //this.send = this.send.bind(this);
+        this.receive = this.receive.bind(this);
+        this.send = this.send.bind(this);
 
         this.worker.onmessage = this.receive;
     }
 
-    send(args) {
+    send(...args) {
         const id = `request-${this.requestsCounter++}`;
 
         return new Promise((resolve, reject) => {
