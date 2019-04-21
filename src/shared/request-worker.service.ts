@@ -15,11 +15,16 @@ export class RequestsWorker {
 
     constructor() {
 
-
+        window.addEventListener('online', () => this.updateOnlineStatus());
+        window.addEventListener('offline', () => this.updateOnlineStatus());
         this.receive = this.receive.bind(this);
         this.send = this.send.bind(this);
-
+        this.worker.postMessage({ type: "activeStatus", activeStatus: window.navigator.onLine });
         this.worker.onmessage = this.receive;
+    }
+
+    private updateOnlineStatus() {
+        this.worker.postMessage({ type: "activeStatus", activeStatus: window.navigator.onLine });
     }
 
     send(...args) {

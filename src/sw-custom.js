@@ -11,6 +11,8 @@ worker.onmessage = (event) => {
 importScripts('./ngsw-worker.js')
 const worker = self;
 
+
+
 // Fake request service
 class Connection {
     constructor() {
@@ -53,6 +55,7 @@ class RequestsQueue {
                 .then((data) => ({ data }))
                 .catch((error) => ({ error }))
                 .then(({ data, error }) => {
+                    console.log("actve status", this.connection.active)
                     if (!this.connection.active) {
                         this.queue.push(queueItem);
                         return;
@@ -84,7 +87,15 @@ class RequestsQueue {
 const requestsQueue = new RequestsQueue();
 
 worker.onmessage = (event) => {
+    console.log("actve status1", event.data.activeStatus)
+    if (event.data.type && event.data.type == "activeStatus") {
+        console.log("actve status2", event.data.activeStatus)
+        const conn = new Connection()
+        conn.active = event.data.activeStatus;
+        return
+    }
     const { id, data } = event.data;
+    console.log("connecton obj", this.connection)
     console.log("rcvd at sw", event.data)
     requestsQueue.push(id, data);
 };
