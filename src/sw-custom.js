@@ -34,9 +34,21 @@ class Connection {
     doRequest(params) {
         this.increaseCounter();
         console.log("do request", params)
-        return new Promise((resolve) => {
-            setTimeout(() => resolve(`return ${params}`), 1000);
+        // return new Promise((resolve) => {
+        //     setTimeout(() => resolve(`return ${params}`), 3000);
+        // })
+
+        return fetch(params.url, {
+            method: params.action, // *GET, POST, PUT, DELETE, etc.
+            mode: "cors", // no-cors, cors, *same-origin
+            cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+            headers: {
+                "Content-Type": "application/json",
+                // "Content-Type": "application/x-www-form-urlencoded",
+            },
         })
+        .then(response => response.json())
+        .catch(error => console.error('Error:', error));
     }
 }
 

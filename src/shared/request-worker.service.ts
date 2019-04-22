@@ -27,7 +27,7 @@ export class RequestsWorker {
         this.worker.postMessage({ type: "activeStatus", activeStatus: window.navigator.onLine });
     }
 
-    send(...args) {
+    send(args) {
         const id = `request-${this.requestsCounter++}`;
 
         return new Promise((resolve, reject) => {
